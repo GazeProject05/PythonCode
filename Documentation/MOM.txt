@@ -5,3 +5,31 @@
 	Zain -> Emails/In contatct with Johannes
 	Rahul -> Scheduling Meetings
 3. Future tasks divison.  
+
+
+28.04.19
+
+1. Discussed and understood multivariate gaussian distribution
+2. Decided to no work with time data for each column.
+3. After Sediq's departure: work was devided in following manner. 
+	TeamLead: Devesh
+	Communication: Zain
+	Scheduling team meets: Rahul 
+
+New Tasks: TJ (Data), cut off data after 10 mins.
+	   Madhu and Zain, find final model for each classification (Scanning, Reading, Skimming, Unknown).    		
+	   Madhu -> Pupil Size
+	   Zain -> x,y pixel position (gaze gradient)
+           
+	   Devesh and Rahul -> Introduction, Literature Survey, Methodology
+
+Go and look if timestamps are in sync for each and every individual (for both annotations).
+
+Looking in data to understand the how *out of sync* data is??
+
+
+Ask Johannes: about sync data? 	    	
+	      {assuming two reading annotations diagree by 2 rows, how do we deal with this. 
+		 discard the disagrement, keep it, or keep half.}	 	
+	
+Note for Zain: StudioEvent---->Look for value 'ScreenRecStarted'
