@@ -33,3 +33,28 @@ Ask Johannes: about sync data?
 		 discard the disagrement, keep it, or keep half.}	 	
 	
 Note for Zain: StudioEvent---->Look for value 'ScreenRecStarted'
+
+
+05.05.19
+
+Presentation.
+	Make changes.
+[ZAIN]	Email Johannes, the slide, by tommorrow morning 
+	+ also ask him if the slides should have OVGU's logo on it.
+
+
+	[Madhu]
+	Pupil Size Distribution: How to use the type of distribution we obtained for the pupil size?? 
+				chi square testing
+
+
+ 	[Devesh & Rahul]
+	Documentation in progress.
+
+	[TJ]
+	Add: Time (hh:mm:ss)
+	     StudioEventIndex_A (rename) 
+	     StudioEventIndex_B (add)
+	10 min cut
+
+	Look for the file in which, ScreenRecordStart was NOT in sync.			  
