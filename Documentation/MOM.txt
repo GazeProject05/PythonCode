@@ -65,9 +65,11 @@ Presentation.
 	x,y pixel position (gaze gradient)
 	[Deadline: 13.05.19]		  
 
-	[Madhu] 
+	[Madhu] Read johannes first paper we did, and look out for type of experiments we could do in pur project.
+		Already idea: drop visual data, and look at accuracy
+		Find more possible experiments. [Deadline: 12.05.19] 
 	
-	[Devesh] Sync data. Remove discrepencies. [Deadline: 12.05.19] 
+	[Devesh] Sync data. Remove discrepencies. [Deadline: 12.05.19] 	
 
 	[Rahul]
 
