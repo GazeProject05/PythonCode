@@ -57,4 +57,22 @@ Presentation.
 	     StudioEventIndex_B (add)
 	10 min cut
 
-	Look for the file in which, ScreenRecordStart was NOT in sync.			  
+	Look for the file in which, ScreenRecordStart was NOT in sync.	
+
+08.05.19
+	[Zain]
+	 find final model for each classification (Scanning, Reading, Skimming, Unknown). 
+	x,y pixel position (gaze gradient)
+	[Deadline: 13.05.19]		  
+
+	[Madhu] 
+	
+	[Devesh] Sync data. Remove discrepencies. [Deadline: 12.05.19] 
+
+	[Rahul]
+
+	[Tj] Code: Tanstion Matrix, 
+		   Emmition Probability	P(GazeEvent|Classification)
+		   talk to zain, decide about a common markov library to code with 
+		[Deadline: 12.05.19]
+	
