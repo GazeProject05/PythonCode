@@ -77,4 +77,20 @@ Presentation.
 		   Emmition Probability	P(GazeEvent|Classification)
 		   talk to zain, decide about a common markov library to code with 
 		[Deadline: 12.05.19]
-	
+
+21.05.19
+
+	we are meeting Johannes on 24.05.19
+	Questions for him:
+	Q1. Any inputs on presentation?
+	Q2. Deadline. A formal date for final project presentation.
+	Q3. Module Mapping (Form)
+	Q4. Madhu's Visual Data question.
+
+	[Tj] Corrections (before 24)  |   Build HMM (08.06.19) 
+	[Zain] ???
+	[Devesh]  SYNC (31.6.19)    |    Build HMM (08.06.19)
+	[Madhu] find final model/paramets for each classification (Scanning, Reading, Skimming, Unknown)
+		*Visual Data (02.06.19)	|      
+	[Rahul] Introduction. Literature Survey. (28.07.19)  
+		  	
