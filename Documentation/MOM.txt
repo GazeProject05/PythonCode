@@ -93,4 +93,21 @@ Presentation.
 	[Madhu] find final model/paramets for each classification (Scanning, Reading, Skimming, Unknown)
 		*Visual Data (02.06.19)	|      
 	[Rahul] Introduction. Literature Survey. (28.07.19)  
-		  	
+
+24.05.19
+	
+	presentation: Everyone reads the slide Johannes gave. Look at the pic Devesh uploads on the group. 
+		      Make *suggestions*. [Deadline-27.05.19]
+
+		      Implemet the sugesstions. [Deadline-31.05.19]
+
+	[Rahul] Introduction. Literature Survey. (28.07.19)  
+	[Tj] Build HMM (08.06.19) 
+	[Zain] ???
+	[Devesh] Build HMM (08.06.19)
+	[Madhu]  Rebuild the collated frequency distribution for visual data.
+		 Undertand Gausian Mixture Model (GMM), 
+                 Find GMM for each reading type, 
+		 build it using a library	  	  	
+		 Find probaility for a new instance, according to each GMM
+	         [Deadline - 07.06.19]
