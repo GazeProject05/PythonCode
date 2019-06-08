@@ -92,7 +92,7 @@ Presentation.
 	[Devesh]  SYNC (31.6.19)    |    Build HMM (08.06.19)
 	[Madhu] find final model/paramets for each classification (Scanning, Reading, Skimming, Unknown)
 		*Visual Data (02.06.19)	|      
-	[Rahul] Introduction. Literature Survey. (28.07.19)  
+	[Rahul] Introduction. Literature Survey. (28.05.19)  
 
 24.05.19
 	
@@ -101,7 +101,7 @@ Presentation.
 
 		      Implemet the sugesstions. [Deadline-31.05.19]
 
-	[Rahul] Introduction. Literature Survey. (28.07.19)  
+	[Rahul] Introduction. Literature Survey. (28.05.19)  
 	[Tj] Build HMM (08.06.19) 
 	[Zain] ???
 	[Devesh] Build HMM (08.06.19)
@@ -117,3 +117,23 @@ Presentation.
 		      Making it a ~20 slides	
                        
 		Absentes: Zain      	xxxx
+
+08.06.19
+	[Rahul] Literare Survey, ~11 papers     [15.06.19]
+	[Madhu]	find for mediaview and upload parametrs for right pupil
+	[Zain] ??
+	[Tj and Devesh] LEARN HMM LEARN!!!
+
+	protocols
+	* Meet Johannes every monday
+	* Send Sunday evening send him an email regarding: 1) Progress made till now. (Code+ Document) 
+							   2) Difficulties and questions
+        
+
+This week email: Ask Johannes about milestones he expects and the sequence..
+	         Madhu's progress
+		 Just a headsup about documentation/ Literature Survey.. (Ask rahul on Monday eve) 
+	
+	* make plan around these milestones, with internal deadlines and deadlines for Johannes..
+ 		
+		 
