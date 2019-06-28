@@ -1,0 +1,39 @@
+28.06.19
+
+**** 
+No need to go thorugh ALL of these. 
+Just learn enough so you could understand,
+what is happening in the algorithm and the code. :) 
+****
+
+
+
+Question: 
+Why do we use Viterbi? Whys is ours a decoding problem?
+https://stats.stackexchange.com/questions/31746/what-is-the-difference-between-the-forward-backward-and-viterbi-algorithms
+
+
+Video Lectures:
+	 
+	Source 1 : https://www.youtube.com/watch?v=ECu_KQV3V30
+		   https://www.youtube.com/watch?v=WqGUa54x8wE
+		   https://www.youtube.com/watch?v=Bu7oSlNCmdU
+		   https://www.youtube.com/watch?v=U6-MN1Rt_FA
+
+	Source 2: https://www.youtube.com/watch?v=RwwfUICZLsA	
+		  https://www.youtube.com/watch?v=t3JIk3Jgifs
+
+
+
+Texts: (Read Introduction and relevant section)
+https://drive.google.com/file/d/0B51S7y4fFTS2bnNLcnllc1dpdVE/view 
+https://jwmi.github.io/ASM/5-HMMs.pdf
+
+
+
+(Zain, have a look) Documentation for Working with HMMLLearn:
+https://buildmedia.readthedocs.org/media/pdf/hidden-markov/latest/hidden-markov.pdf
+
+
+
+Where I took source code from: https://github.com/llrs/Viterbi/blob/master/Viterbi.py
