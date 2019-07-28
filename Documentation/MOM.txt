@@ -136,4 +136,33 @@ This week email: Ask Johannes about milestones he expects and the sequence..
 	
 	* make plan around these milestones, with internal deadlines and deadlines for Johannes..
  		
-		 
+
+23-06-19
+	[Rahul] Ask Johaness's feedback about the LitS.
+		(will work on) Make updates till 14.July
+	[Madu] Done with GMM.    (WORK ON THIS TILL 30.06.19)
+		Questions for Johaness
+		Q1. How to access the convergence of GMM?
+		Q2. Updates after batch mode or Single data each? 
+	        (after 11.07.19, work on HMM)
+	[Zain] Done with Multivariate Gaussian Distribution
+		(will work on) Viterbi (or something else), through HMMLEARN library / or some 
+				for prelimnary results (3.07.19)
+	[TJ] (will work on) Updating A, transition matrix	[26.06.19]
+               		    Viterbi (or something else) (Coding from scratch)
+	[Devesh] Viterbi (or something else) (Coding from scratch) 
+
+
+13-07-19 	
+	[Madhu] Checking COnvergence/optimization/log-likelihood [deadline: 30.7.19] 	
+                * Testing for attribute-pupil size, in scenatiors: 1. Independently    2. In time context    	     	  		   	 
+	[Rahul] DATA DEFINITAION could be a subsection.
+                [Ask Johnnes] about Overleaf/Latex.
+        [Tj] Updating Matrices (State Transition and Emission) -> taking log before calculating probability   [deadline: 20.7.19]
+        [Zain]    . Upload for variables found using GRADIENT!  (today)
+                  . Implementing HMM, for ALL the variables at ONCE.           [deadline: 20.7.19]
+        [Devesh] . What to do with already found log values (add or multiply)
+                . implemeting a function for   1. P(pupil size|states)   2. P(gaze gradient|states) 
+              
+                 [Inform Johannes] About getting module mapping forms for this project.
+                 [Inform Johannes] About 2 team members not being here in August.        
