@@ -4,8 +4,13 @@ import math as m
 
 df = pd.read_csv('19Proband19.csv')
 #Observation for HMM
-obs = df['GazeEventType']
-obs = tuple(obs)
+# obs = df[['GazeEventType','PupilLeft']]
+
+gazeData = df['GazeEventType']
+b = df['PupilLeft']
+pupilData = b.str.replace(',','.').astype(float)
+
+#obs = tuple(obs)
 
 #GroundTruth
 gd1 = df['StudioEvent']
@@ -16,10 +21,9 @@ gd2 = df['StudioEvent_B']
 # y3= df['GazeEventTypeDiff']
 
 
-
-
 states = ('Scanning', 'Skimming', 'Reading', 'MediaView', 'Unknown')
 start_probability = {'Scanning': 0.2, 'Skimming': 0.2, 'Reading': 0.2, 'MediaView': 0.2, 'Unknown': 0.2}
+
 
 observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')    #First 7 sates fixation
 
@@ -55,7 +59,49 @@ emission_probability = {
 
 
 
+##--------------------    MODEL FOR PUPIL DATA -- AND -- FUNCTIONS TO CALCULATE PROBABILITIES  ------------------##
 
+PupilModel = {
+ 'Reading' : (  {'mean': 2.4, 'std_dev': 0.11, 'weight': 0.2},
+                 {'mean': 3.0, 'std_dev': 0.22, 'weight': 0.73},
+                 {'mean': 3.8, 'std_dev': 0.16, 'weight': 0.064}
+                ),
+ 'Scanning' : (  {'mean': 2.8, 'std_dev': 0.17, 'weight': 0.61},
+                 {'mean': 3.9, 'std_dev': 0.35, 'weight': 0.13},
+                 {'mean': 2.2, 'std_dev': 0.19, 'weight': 0.26}
+                ),
+ 'Skimming' : (  {'mean': 2.6, 'std_dev': 0.3, 'weight': 0.22},
+                 {'mean': 3.7, 'std_dev': 0.32, 'weight': 0.24},
+                 {'mean': 3.0, 'std_dev': 0.19, 'weight': 0.55}
+                ),
+ 'Unknown' : ({'mean': 3.0, 'std_dev': 0.4, 'weight': 1.0}, ),
+ 'MediaView' : (  {'mean': 2.7, 'std_dev': 0.29, 'weight': 0.75},
+                 {'mean': 3.8, 'std_dev': 0.25, 'weight': 0.25}
+                )
+
+}
+
+
+def normalProbability(x, mean, std_dev):
+    return ( (1/(std_dev*2.507)) * m.exp((-0.5)*m.pow( (x - mean)/std_dev , 2) ) )
+
+
+def gmmProbability(x, key):
+    n = len(PupilModel[key])
+    p = 0
+
+    if(np.isnan(x)):              #checking for 0 (NAN) values
+        return 0
+
+    else:
+        for i in range(n):
+            p = p + ( normalProbability(x, PupilModel[key][i]['mean'] , PupilModel[key][i]['std_dev'] )  * PupilModel[key][i]['weight']  )
+
+        return p
+
+
+
+##-----------------------------------   VITERBI IMPLIMENTATION ------------------------------------------------------##
 
 
 # Helps visualize the steps of Viterbi.
@@ -67,26 +113,27 @@ def print_dptable(V):
         s += "\n"
     print(s)
 
-def viterbi(obs, states, start_p, trans_p, emit_p):
-    V = [{}]
+#Viterbi algo function
+def viterbi(gazeData, pupilData, states, start_p, trans_p, emit_p):
+    V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionar
     path = {}
 
     # Initialize base cases (t == 0)
     for y in states:
-        V[0][y] = start_p[y] * emit_p[y][obs[0]]
+        V[0][y] = start_p[y] * emit_p[y][gazeData[0]] * gmmProbability(pupilData[0] ,y)
         path[y] = [y]
 
     # alternative Python 2.7+ initialization syntax
     # V = [{y:(start_p[y] * emit_p[y][obs[0]]) for y in states}]
     # path = {y:[y] for y in states}
 
-    # Run Viterbi for t > 0
-    for t in range(1, len(obs)):
+    # Run Viterbi for (t >= 1)
+    for t in range(1, len(gazeData)):
         V.append({})
         newpath = {}
 
         for y in states:
-            (prob, state) = max(  (  m.log1p(V[t-1][y0]) + m.log1p( trans_p[y0][y] ) + m.log1p( emit_p[y][obs[t]] )  , y0 ) for y0 in states   )
+            (prob, state) = max(  (  m.log1p(V[t-1][y0]) + m.log1p( trans_p[y0][y] ) + m.log1p( emit_p[y][gazeData[t]] ) + m.log1p(gmmProbability(pupilData[t], y0 )) , y0 ) for y0 in states   )
             V[t][y] = prob
             newpath[y] = path[state] + [y]
 
@@ -98,9 +145,13 @@ def viterbi(obs, states, start_p, trans_p, emit_p):
     # return (prob, path[state])
     print(prob, path[state])
 
+
+
+##--------------------- MAIN() ------------------##
+
 def main():
-    return viterbi(obs, states, start_probability, transition_probability, emission_probability)
-    # print(    tuple(obs)  )
+    viterbi(gazeData, pupilData, states, start_probability, transition_probability, emission_probability)
+    # print( type(b[9]) )
 
 if __name__ == '__main__':
     main()
