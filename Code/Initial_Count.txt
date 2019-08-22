@@ -1,0 +1,23 @@
+We are here noting the 1st noted state (ignoring the sate *unstated*).
+
+		A		B
+Sheet1		Unkown		Unkown
+Sheet2		Unkown		Unkown
+Sheet3		Unkown		Reading
+Sheet5		Unkown		Reading
+Sheet6		Reading		Reading
+Sheet7		Unkown		Reading
+Sheet8		Reading		Reading
+Sheet9		-		-	(No Annotations were made)
+Sheet10		Unkown		Reading
+Sheet11		Scanning	Reading
+Sheet12		Reading		Reading
+Sheet13		Scanning	Reading
+Sheet14		Scanning	Reading
+Sheet15		Scanning	Reading
+Sheet16		Scanning	Reading
+Sheet17		Scanning	Reading
+Sheet18		Reading		Reading
+Sheet19		Scanning	Reading
+Sheet20		Reading		Reading
+Sheet21 	Reading		Reading
