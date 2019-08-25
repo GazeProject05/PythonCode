@@ -165,4 +165,24 @@ This week email: Ask Johannes about milestones he expects and the sequence..
                 . implemeting a function for   1. P(pupil size|states)   2. P(gaze gradient|states) 
               
                  [Inform Johannes] About getting module mapping forms for this project.
-                 [Inform Johannes] About 2 team members not being here in August.        
+                 [Inform Johannes] About 2 team members not being here in August.     
+
+...........
+MOM for two (or 3) meeting b/w 4.8.19 and 18.8.19 not present  
+...........
+
+25.8.19
+
+[Devesh] Deadline [29th August 2019]
+1. GMM -> Left and right eye implimentation
+2. log-sum-exp trick (Look up Madhu's Code)
+3. 2nd order markov model - Change Code
+4.     mn (multinormal).logpdf  (Look up madhu's code)    [2]
+5.  Write in Report 4.c.ii - Usage of HMM
+6. Choose Training and testing files   !!!! AND FIND VALUES FOR ASSESMENT
+
+[TJ]  -> Add 2 columns for Gaze Gradient. [Tonight]
+
+Madhu ->  GMM part in Table of Contetnts
+Madhu+Zain ->   Feature subset selection [Decide Deadline]
+Madhu -> update Assement file to add information regarding skew of classes (in each file)
