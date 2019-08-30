@@ -22,9 +22,9 @@ gazeGradientData = df[['GazeGradientX','GazeGradientY']]
 gd1 = df['StudioEvent']
 gd2 = df['StudioEvent_B']
 
-                    #WHY are obs and y2 ARE THESE DIFFERENT??????
-                    # y2 = df['GazeEventType_B']
-                    # y3= df['GazeEventTypeDiff']
+                            #WHY are obs and y2 ARE THESE DIFFERENT??????
+                            # y2 = df['GazeEventType_B']
+                            # y3= df['GazeEventTypeDiff']
 
 
 # Modeling
@@ -33,20 +33,61 @@ start_probability = {'Scanning': 0.17857142857, 'Skimming': 0.0, 'Reading': 0.53
 
 
 #Dummy data for testing GazeEventType
-observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')    #First 7 sates fixation
+observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')
 
 
+#-------------------- 2nd order Transition Matrix ----------#
 
-#-------------------- 1st order Transition Matrix ----------#
+transition = {
+        'Scanning': {
+                'Scanning' : {'Scanning': -0.00235859037141317, 'Skimming':-7.84054416478143, 'Reading': -7.55913170534324, 'MediaView': -9.38935745539909, 'Unknown': -6.60216993373816},
+                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                    },
+        
+        'Skimming': {
+                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Skimming' : {'Scanning': -7.3321416940548, 'Skimming': -0.00248704397933963, 'Reading': -7.24876008511575, 'MediaView': -9.16835292585369, 'Unknown': -6.89341936419016},
+                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                    },
+        
+          'Reading': {
+                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Reading' :  {'Scanning': -7.66863174233932, 'Skimming': -8.07992777075827, 'Reading': -0.00202320224343566, 'MediaView': -10.043537496913, 'Unknown': -6.72481633707507},
+                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                    },
+          
+            'MediaView': {
+                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'MediaView' :{'Scanning': -6.94456925210485, 'Skimming': -7.03158062909448, 'Reading': -7.6377164326648, 'MediaView': -0.0037822440775237, 'Unknown': -6.53910414399669},
+                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                    },
+            
+              'Unknown': {
+                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Unknown' :  {'Scanning': -7.38418922439092, 'Skimming': -8.34609046751713, 'Reading': -7.95179866000709, 'MediaView': -10.7356869375008, 'Unknown': -0.00123285911253923}
+                    }
+        
+        }
+              
 
-transition_probability = {
-   'Scanning' : {'Scanning': -0.00203497384534224, 'Skimming': -7.5923661285198, 'Reading': 0, 'MediaView': -8.66020675852115, 'Unknown': -7.29690191562596},
-   'Skimming' : {'Scanning': -8.62066282958238, 'Skimming': -0.0020733332554741, 'Reading': -9.40912018994665, 'MediaView': -8.24596938014096, 'Unknown': -7.45373129693679},
-   'Reading' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-   'MediaView' : {'Scanning': -8.49865885041396, 'Skimming': -7.40004656174585, 'Reading': 0.0, 'MediaView': -0.00341385911724501, 'Unknown': -6.90757007664806},
-   'Unknown' : {'Scanning': -8.71173390693675, 'Skimming': -7.7837471352994, 'Reading': -10.6286565191188, 'MediaView': -8.38794682984285, 'Unknown': -0.0023707550246872}
-   }
-
+#print(transition['Reading']['Reading']['Unknown']) 
+# t-2 -> Reading -> state 2 time steps ago
+# t-1 -> Reading -> state 1 time step ago
+# t   -> Unkown -> state in this time step    
+       
+        
 ##------------------------------- MODEL FOR GAZE EVENT TYPE ---------------------------------------##
 
 emission_probability = {
@@ -112,7 +153,7 @@ def gmmProbability(x, key, side):
     if(np.isnan(x)):              #checking for 0 (NAN) values
         p = 0
     
-    elif(side=='left'):           #side -> decides which (left or right) pupil model are we going to use. 
+    elif(side=='left'):          #side -> decides which (left or right) pupil model are we going to use.    
         n = len(leftPupilModel[key])
         p = 0
         for i in range(n):
@@ -162,13 +203,14 @@ MultiVariateModel = {
 # mn.pdf(x,mean,cov)
 
 def mulnor(x, key):
-    if(np.isnan(x[0] or x[1]) ):     #checking for 0 (NAN) values
+    if(np.isnan(x[0] or x[1]) ):      #checking for 0 (NAN) values
         return 0
     else:
         return mn.pdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
-
-##-----------------------------------   VITERBI IMPLIMENTATION ------------------------------------------------------##
-
+        
+              
+    
+#--------------- Viterbi Implimentation -----------------#
 
 # Helps visualize the steps of Viterbi.
 def print_dptable(V):
@@ -178,20 +220,18 @@ def print_dptable(V):
         s += " ".join("%.7s" % ("%f" % v[y]) for v in V)
         s += "\n"
     print(s)
-
-
-
+    
+    
 #Viterbi algo function
 def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_p, trans_p, emit_p):
-    V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionary
+    V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionar
     path = {}
-
-
+    
     # Initialize base cases (t == 0)
     for y in states:
         #USE LOG HERE
-        array = [ m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y)) ]
-        V[0][y] = logExpSum(array)
+        array = [m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y))]
+        V[0][y] = logExpSum(array)  
         path[y] = [y]
 
    
@@ -205,39 +245,41 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         for y in states:
             maximum = float("-inf")
             state = ''
-            array = []
-            for y0 in states:
-                      # y -> t   -> state in this time step
-                      #y0 -> t-1 -> state 1 time step ago
-                
-                array = [ (V[t-1][y0]), trans_p[y0][y], m.log1p(emit_p[y][gazeEventData[t]]), m.log1p(gmmProbability(leftPupilData[t], y, 'left')), m.log1p(gmmProbability(rightPupilData[t], y, 'right')), m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
+            array = []            
+            for y0 in states:                
+                x = (path[y0][t-2])
+                array = [ (V[t-1][y0]) , ( trans_p[x][y0][y] ) , m.log1p( emit_p[y][gazeEventData[t]] ) , m.log1p(gmmProbability(leftPupilData[t], y, 'left')) , m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  , m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
                 temp = logExpSum(array)
+                
+                # y  -> t   -> state in this time step
+                # y0 -> t-1 -> state 1 time step ago
+                # x  -> t-2 -> state 2 time steps ago
                 
                 if (temp > maximum):
                     maximum = temp
                     state = y0
-            
-            #(prob, state) = max(  (  m.log1p(V[t-1][y0]) + ( trans_p[y0][y] ) + m.log1p( emit_p[y][gazeEventData[t]] ) + m.log1p(gmmProbability(leftPupilData[t], y, 'left')) + m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  + m.log1p(mulnor(gazeGradientData.iloc[t], y))  , y0 ) for y0 in states   )
-            
-            
+                
+                
             V[t][y] = maximum
             newpath[y] = path[state] + [y]
 
         # Don't need to remember the old paths
         path = newpath
-
-    # print_dptable(V)
+        
+        
+    #print_dptable(V)
     (prob, state) = max((V[t][y], y) for y in states)
     # return (prob, path[state])
     #print(prob, path[state])
     #print(type(path[state]))
-    return path[state]
+    return( path[state] ) 
+
 
 
 ##------------------------- Saving in a .csv file ----------##
     
 def exportcsv(path, A, B):
- 
+
     fields = ['Prediction','A','B']
 
     with open ('output.csv','w') as file:
@@ -245,8 +287,8 @@ def exportcsv(path, A, B):
         writer.writeheader()
         for i in range(len(A)):
             
-            if((A[i] or B[i])== '0_unstated' ):      #Intially, after ScreenRecordStart, there were no annotations made -
-                continue                             #  for some rows, so we skip those rows  
+            if((A[i] or B[i])== '0_unstated' ):     #Intially, after ScreenRecordStart, there were no annotations made - 
+                continue                            #  for some rows, so we skip those rows
             
             else:
                 a = A[i].split('_')
@@ -257,7 +299,7 @@ def exportcsv(path, A, B):
 
 
     file.close()
-    
+
 
 #--------------- log Exp trick ----------#
 
@@ -280,11 +322,15 @@ def findMaxArray(arr):
     return maxValue
     
 
-##--------------------- MAIN() ------------------##
 
+
+#-------------- Main--------#
 def main():
-    path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition_probability, emission_probability)
-   
+    path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, emission_probability)
+
+    print(len(path))
+    print(len(gd1))
+    print(len(gd2))
     exportcsv(path, gd1, gd2)
     
 
