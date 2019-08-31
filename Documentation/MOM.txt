@@ -169,7 +169,7 @@ This week email: Ask Johannes about milestones he expects and the sequence..
 
 ...........
 MOM for two (or 3) meeting b/w 4.8.19 and 18.8.19 not present  
-...........
+...............................................
 
 25.8.19
 
@@ -186,3 +186,25 @@ MOM for two (or 3) meeting b/w 4.8.19 and 18.8.19 not present
 Madhu ->  GMM part in Table of Contetnts
 Madhu+Zain ->   Feature subset selection [Decide Deadline]
 Madhu -> update Assement file to add information regarding skew of classes (in each file)
+
+......................................
+31.08.19
+
+                  [deadline- 9th September 2019 ]
+[Devesh]
+1. Base case in Viterbi for 2nd or higher order
+2. How else to missing values in a time series data.
+3. Model evalutions, statistical testing
+ 		[from last week] -> 5.  Write in Report 4.c.ii - Usage of HMM
+
+[Madhu + Zain] 
+1. Wrapper method, feature subset selection
+		[from last week]  Madhu ->  GMM part in Table of Contetnts
+		[from last week]  Zain -> Write about Multivariate
+
+[Tj]   
+1. Merging files, so that there is no GazeTypeEvent Difference    [deadline 1.09.19]
+   1.b   Find Transtion matrix and Emission Matrix 
+2. Colab with Rahul, write about data prepration and transforamtion
+
+[Rahul] 
