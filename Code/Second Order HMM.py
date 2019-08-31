@@ -40,7 +40,7 @@ observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation',
 
 transition = {
         'Scanning': {
-                'Scanning' : {'Scanning': -0.00235859037141317, 'Skimming':-7.84054416478143, 'Reading': -7.55913170534324, 'MediaView': -9.38935745539909, 'Unknown': -6.60216993373816},
+                'Scanning' : {'Scanning': -0.00232644438500174, 'Skimming':-7.88618962102806, 'Reading': -7.53254958078448, 'MediaView': -9.24263101899826, 'Unknown': -6.63342665253269},
                 'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
@@ -49,7 +49,7 @@ transition = {
         
         'Skimming': {
                 'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Skimming' : {'Scanning': -7.3321416940548, 'Skimming': -0.00248704397933963, 'Reading': -7.24876008511575, 'MediaView': -9.16835292585369, 'Unknown': -6.89341936419016},
+                'Skimming' : {'Scanning': -7.48754377378507, 'Skimming': -0.00237288416630221, 'Reading': -7.22243602337183, 'MediaView': -9.11500019172185, 'Unknown': -6.93818448601684},
                 'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
@@ -58,7 +58,7 @@ transition = {
           'Reading': {
                 'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Reading' :  {'Scanning': -7.66863174233932, 'Skimming': -8.07992777075827, 'Reading': -0.00202320224343566, 'MediaView': -10.043537496913, 'Unknown': -6.72481633707507},
+                'Reading' :  {'Scanning': -7.6817646949916, 'Skimming': -8.02586085672347, 'Reading': -0.00201595889106265, 'MediaView': -10.1053023984033, 'Unknown': -6.73800656841683},
                 'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
                     },
@@ -67,7 +67,7 @@ transition = {
                 'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'MediaView' :{'Scanning': -6.94456925210485, 'Skimming': -7.03158062909448, 'Reading': -7.6377164326648, 'MediaView': -0.0037822440775237, 'Unknown': -6.53910414399669},
+                'MediaView' :{'Scanning': -6.93723317180174, 'Skimming': -7.02424454879137, 'Reading': -7.81270190915564, 'MediaView': -0.00372892779686396, 'Unknown': -6.53176806369357},
                 'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
                     },
             
@@ -76,7 +76,7 @@ transition = {
                 'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
                 'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Unknown' :  {'Scanning': -7.38418922439092, 'Skimming': -8.34609046751713, 'Reading': -7.95179866000709, 'MediaView': -10.7356869375008, 'Unknown': -0.00123285911253923}
+                'Unknown' :  {'Scanning': -7.50494623776424, 'Skimming': -8.39876411378634, 'Reading': -7.9629015284938, 'MediaView': -10.6830000681122, 'Unknown': -0.00114723164757713}
                     }
         
         }
@@ -147,25 +147,39 @@ rightPupilModel = {
 def normalProbability(x, mean, std_dev):
     return ( (1/(std_dev*2.507)) * m.exp((-0.5)*m.pow( (x - mean)/std_dev , 2) ) )
 
+def logPdf(datapoint, mean,deviation):
+    #print("Calculating PDF")
+    #u = (datapoint - self.mean) / abs(self.deviation)
+    #y = -math.log(math.sqrt(2*math.pi*self.deviation * self.deviation))- (u*u/2)
+    u = (datapoint - mean)
+    y = -m.log(m.sqrt(2*m.pi*deviation))- (u*u/(2*deviation))
+    #print("PDF: {} ".format(y))
+    return y
+
 
 def gmmProbability(x, key, side):
-   
-    if(np.isnan(x)):              #checking for 0 (NAN) values
-        p = 0
     
-    elif(side=='left'):          #side -> decides which (left or right) pupil model are we going to use.    
-        n = len(leftPupilModel[key])
-        p = 0
+    p=0
+    tempProbabs = []
+    
+    #if(np.isnan(x)):              #checking for 0 (NAN) values
+    #    p = 0
+    
+    
+    if(side=='left'):           #side -> decides which (left or right) pupil model are we going to use. 
+        n = len(leftPupilModel[key])        
         for i in range(n):
-            p = p + ( normalProbability(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )  * leftPupilModel[key][i]['weight']  )
-    
+            tempProbabs.append(logPdf(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )+ m.log(leftPupilModel[key][i]['weight']))
+    #        p = p + ( normalProbability(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )  * leftPupilModel[key][i]['weight']  )
+        p = logExpSum(tempProbabs)
     
     elif(side=='right'):
         n = len(rightPupilModel[key])
-        p = 0
         for i in range(n):
-            p = p + ( normalProbability(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )  * rightPupilModel[key][i]['weight']  )
-    
+            tempProbabs.append(logPdf(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )+ m.log(rightPupilModel[key][i]['weight']))
+    #        p = p + ( normalProbability(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )  * rightPupilModel[key][i]['weight']  )
+        p = logExpSum(tempProbabs)
+        
     return p
 
 
@@ -203,10 +217,10 @@ MultiVariateModel = {
 # mn.pdf(x,mean,cov)
 
 def mulnor(x, key):
-    if(np.isnan(x[0] or x[1]) ):      #checking for 0 (NAN) values
-        return 0
-    else:
-        return mn.pdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
+ #   if(np.isnan(x[0] or x[1]) ):     #checking for 0 (NAN) values
+  #      return 0
+  #  else:
+  return mn.logpdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
         
               
     
@@ -230,7 +244,25 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     # Initialize base cases (t == 0)
     for y in states:
         #USE LOG HERE
-        array = [m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y))]
+        #array = [m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y))]
+        array = []
+        #1st ->  Logic for skipping probilities, when data is not presents
+        
+        if(start_p[y] != 0.0):
+            array.append(m.log(start_p[y]))
+                
+        if(pd.isnull(gazeEventData[0]) == False):
+            array.append(m.log(emit_p[y][gazeEventData[0]]))
+                    
+        if(pd.isnull(leftPupilData[0]) == False):    
+            array.append(gmmProbability(leftPupilData[0], y, 'left'))
+        if(pd.isnull(rightPupilData[0]) == False):    
+            array.append(gmmProbability(rightPupilData[0], y, 'right'))
+                
+        if((gazeGradientData.iloc[0].dropna().empty) == False):
+            array.append(mulnor(gazeGradientData.iloc[0], y))
+        
+        
         V[0][y] = logExpSum(array)  
         path[y] = [y]
 
@@ -245,10 +277,26 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         for y in states:
             maximum = float("-inf")
             state = ''
-            array = []            
+            array = []     
+            
             for y0 in states:                
                 x = (path[y0][t-2])
-                array = [ (V[t-1][y0]) , ( trans_p[x][y0][y] ) , m.log1p( emit_p[y][gazeEventData[t]] ) , m.log1p(gmmProbability(leftPupilData[t], y, 'left')) , m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  , m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
+                #array = [ (V[t-1][y0]) , ( trans_p[x][y0][y] ) , m.log1p( emit_p[y][gazeEventData[t]] ) , m.log1p(gmmProbability(leftPupilData[t], y, 'left')) , m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  , m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
+                
+                 #1st ->  Logic for skipping probilities, when data is not presents
+                array = [ (V[t-1][y0]), trans_p[x][y0][y] ]
+                
+                if(pd.isnull(gazeEventData[t]) == False):
+                    array.append(m.log(emit_p[y][gazeEventData[t]]))
+                    
+                if(pd.isnull(leftPupilData[t]) == False):    
+                    array.append(gmmProbability(leftPupilData[t], y, 'left'))
+                if(pd.isnull(rightPupilData[t]) == False):    
+                    array.append(gmmProbability(rightPupilData[t], y, 'right'))
+                
+                if((gazeGradientData.iloc[t].dropna().empty) == False):
+                    array.append(mulnor(gazeGradientData.iloc[t], y))
+                
                 temp = logExpSum(array)
                 
                 # y  -> t   -> state in this time step
@@ -328,9 +376,9 @@ def findMaxArray(arr):
 def main():
     path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, emission_probability)
 
-    print(len(path))
-    print(len(gd1))
-    print(len(gd2))
+    #print(len(path))
+    #print(len(gd1))
+    #print(len(gd2))
     exportcsv(path, gd1, gd2)
     
 

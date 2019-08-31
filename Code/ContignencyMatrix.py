@@ -6,6 +6,10 @@ Created on Sat Aug 17 11:24:54 2019
 @author: madhusharma
 """
 import pandas as pd
+import numpy as np
+
+import warnings
+warnings.filterwarnings("ignore")
     
 filename = 'output.csv'
 data = pd.read_csv(filename) 
@@ -20,6 +24,9 @@ y_true_B = data ['B']
 from sklearn import metrics
 
 # Print the confusion matrix
+
+#print("A wrt B, checking ground trurths against each other.")
+
 print("CONFUSION MATRIX WRT B")
 ConfusionMatrix = metrics.confusion_matrix(y_true_B, y_pred,labels=["Unknown", "Mediaview", "Skimming", "Scanning", "Reading"])
 accuratePredictions = 0
@@ -31,11 +38,11 @@ for i in range(0, len(ConfusionMatrix)):
             
         else:
             totalPredictions += ConfusionMatrix[i][j]
-print("ACCURATE PREDICTIONS {}".format(accuratePredictions))
-print("PREDICTIONS {}".format(totalPredictions))
+print("#ACCURATE PREDICTIONS {}".format(accuratePredictions))
+print("#Incorrect PREDICTIONS {}".format(totalPredictions))
 finalAccuracy = accuratePredictions/(totalPredictions+accuratePredictions)
-print(finalAccuracy)
-
+print("Accuracy:", finalAccuracy)
+print('\n')
 
 # Print the precision and recall, among other metrics
 print(metrics.classification_report(y_true_B, y_pred, digits=3))
@@ -65,6 +72,10 @@ def findDistribution(arr):
             num_read +=1
             total +=1
     print("SKIM:{} SCAN:{} READ:{} UNKNOWN:{} MEDIAVIEW:{} TOTAL:{}".format(num_skim,num_scan,num_read,num_unknown,num_media,total))
+    x = np.array([num_skim,num_scan,num_read,num_unknown,num_media]) 
+    print("majority class %:", np.max(x)/total)   
+    print('\n')
+    
     
 print("PREDICTED VALUES")
 findDistribution(y_pred)

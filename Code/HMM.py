@@ -40,11 +40,11 @@ observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation',
 #-------------------- 1st order Transition Matrix ----------#
 
 transition_probability = {
-   'Scanning' : {'Scanning': -0.00203497384534224, 'Skimming': -7.5923661285198, 'Reading': 0, 'MediaView': -8.66020675852115, 'Unknown': -7.29690191562596},
-   'Skimming' : {'Scanning': -8.62066282958238, 'Skimming': -0.0020733332554741, 'Reading': -9.40912018994665, 'MediaView': -8.24596938014096, 'Unknown': -7.45373129693679},
-   'Reading' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-   'MediaView' : {'Scanning': -8.49865885041396, 'Skimming': -7.40004656174585, 'Reading': 0.0, 'MediaView': -0.00341385911724501, 'Unknown': -6.90757007664806},
-   'Unknown' : {'Scanning': -8.71173390693675, 'Skimming': -7.7837471352994, 'Reading': -10.6286565191188, 'MediaView': -8.38794682984285, 'Unknown': -0.0023707550246872}
+   'Scanning' : {'Scanning': -0.00232095217675443, 'Skimming': -7.88855044050366, 'Reading': -7.53491040026009, 'MediaView': -9.24499183847387, 'Unknown': -6.6357874720083},
+   'Skimming' : {'Scanning': -7.48995094652083, 'Skimming': -0.00236717233575057, 'Reading': -7.22484319610759, 'MediaView': -9.11740736445761, 'Unknown': -6.9405916587526},
+   'Reading'  : {'Scanning': -7.68382320280519, 'Skimming': -8.02791936453706, 'Reading': -0.00201180911939325, 'MediaView': -10.1073609062169, 'Unknown': -6.74006507623042},
+   'MediaView': {'Scanning': -6.9409482463379, 'Skimming': -7.02795962332753, 'Reading': -7.8164169836918, 'MediaView': -0.00371507453616538, 'Unknown': -6.53548313822974},
+   'Unknown'  : {'Scanning': -7.50610673071849, 'Skimming': -8.39992460674059, 'Reading': -7.96406202144805, 'MediaView': -10.6841605610664, 'Unknown': -0.00114590030289818}
    }
 
 ##------------------------------- MODEL FOR GAZE EVENT TYPE ---------------------------------------##
@@ -107,24 +107,39 @@ def normalProbability(x, mean, std_dev):
     return ( (1/(std_dev*2.507)) * m.exp((-0.5)*m.pow( (x - mean)/std_dev , 2) ) )
 
 
+def logPdf(datapoint, mean,deviation):
+    #print("Calculating PDF")
+    #u = (datapoint - self.mean) / abs(self.deviation)
+    #y = -math.log(math.sqrt(2*math.pi*self.deviation * self.deviation))- (u*u/2)
+    u = (datapoint - mean)
+    y = -m.log(m.sqrt(2*m.pi*deviation))- (u*u/(2*deviation))
+    #print("PDF: {} ".format(y))
+    return y
+
+
 def gmmProbability(x, key, side):
-   
-    if(np.isnan(x)):              #checking for 0 (NAN) values
-        p = 0
     
-    elif(side=='left'):           #side -> decides which (left or right) pupil model are we going to use. 
-        n = len(leftPupilModel[key])
-        p = 0
+    p=0
+    tempProbabs = []
+    
+    #if(np.isnan(x)):              #checking for 0 (NAN) values
+    #    p = 0
+    
+    
+    if(side=='left'):           #side -> decides which (left or right) pupil model are we going to use. 
+        n = len(leftPupilModel[key])        
         for i in range(n):
-            p = p + ( normalProbability(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )  * leftPupilModel[key][i]['weight']  )
-    
+            tempProbabs.append(logPdf(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )+ m.log(leftPupilModel[key][i]['weight']))
+    #        p = p + ( normalProbability(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )  * leftPupilModel[key][i]['weight']  )
+        p = logExpSum(tempProbabs)
     
     elif(side=='right'):
         n = len(rightPupilModel[key])
-        p = 0
         for i in range(n):
-            p = p + ( normalProbability(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )  * rightPupilModel[key][i]['weight']  )
-    
+            tempProbabs.append(logPdf(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )+ m.log(rightPupilModel[key][i]['weight']))
+    #        p = p + ( normalProbability(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )  * rightPupilModel[key][i]['weight']  )
+        p = logExpSum(tempProbabs)
+        
     return p
 
 
@@ -162,10 +177,10 @@ MultiVariateModel = {
 # mn.pdf(x,mean,cov)
 
 def mulnor(x, key):
-    if(np.isnan(x[0] or x[1]) ):     #checking for 0 (NAN) values
-        return 0
-    else:
-        return mn.pdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
+ #   if(np.isnan(x[0] or x[1]) ):     #checking for 0 (NAN) values
+  #      return 0
+  #  else:
+  return mn.logpdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
 
 ##-----------------------------------   VITERBI IMPLIMENTATION ------------------------------------------------------##
 
@@ -190,7 +205,25 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     # Initialize base cases (t == 0)
     for y in states:
         #USE LOG HERE
-        array = [ m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y)) ]
+#        array = [ m.log(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y)) ]
+        array = []
+        #1st ->  Logic for skipping probilities, when data is not presents
+        
+        if(start_p[y] != 0.0):
+            array.append(m.log(start_p[y]))
+                
+        if(pd.isnull(gazeEventData[0]) == False):
+            array.append(m.log(emit_p[y][gazeEventData[0]]))
+                    
+        if(pd.isnull(leftPupilData[0]) == False):    
+            array.append(gmmProbability(leftPupilData[0], y, 'left'))
+        if(pd.isnull(rightPupilData[0]) == False):    
+            array.append(gmmProbability(rightPupilData[0], y, 'right'))
+                
+        if((gazeGradientData.iloc[0].dropna().empty) == False):
+            array.append(mulnor(gazeGradientData.iloc[0], y))
+        
+        
         V[0][y] = logExpSum(array)
         path[y] = [y]
 
@@ -210,7 +243,24 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                       # y -> t   -> state in this time step
                       #y0 -> t-1 -> state 1 time step ago
                 
-                array = [ (V[t-1][y0]), trans_p[y0][y], m.log1p(emit_p[y][gazeEventData[t]]), m.log1p(gmmProbability(leftPupilData[t], y, 'left')), m.log1p(gmmProbability(rightPupilData[t], y, 'right')), m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
+                #1st ->  Logic for skipping probilities, when data is not presents
+                array = [ (V[t-1][y0]), trans_p[y0][y] ]
+                
+                if(pd.isnull(gazeEventData[t]) == False):
+                    array.append(m.log(emit_p[y][gazeEventData[t]]))
+                    
+                if(pd.isnull(leftPupilData[t]) == False):    
+                    array.append(gmmProbability(leftPupilData[t], y, 'left'))
+                if(pd.isnull(rightPupilData[t]) == False):    
+                    array.append(gmmProbability(rightPupilData[t], y, 'right'))
+                
+                if((gazeGradientData.iloc[t].dropna().empty) == False):
+                    array.append(mulnor(gazeGradientData.iloc[t], y))
+                    
+                    
+               # 2nd Logic -> Assume that if data is missing, than it is eqaul to data recorded at last step  
+               #   so something like ->  if empty -> x = x[t-1]   AND then uncomment the next line
+               # array = [ (V[t-1][y0]), trans_p[y0][y], m.log1p(emit_p[y][gazeEventData[t]]), m.log1p(gmmProbability(leftPupilData[t], y, 'left')), m.log1p(gmmProbability(rightPupilData[t], y, 'right')), m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
                 temp = logExpSum(array)
                 
                 if (temp > maximum):
