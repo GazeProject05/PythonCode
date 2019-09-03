@@ -5,7 +5,7 @@ from scipy.stats import multivariate_normal as mn
 import csv
 
 #Reading data file
-df = pd.read_excel('19Proband19.xlsx')
+df = pd.read_excel('21Proband21.xlsx')
 
 #Readig relevant columns of data
 gazeEventData = df['GazeEventType']
@@ -290,12 +290,12 @@ def exportcsv(path, A, B):
  
     fields = ['Prediction','A','B']
 
-    with open ('output.csv','w') as file:
+    with open ('output_1st.csv','w') as file:
         writer = csv.DictWriter(file, fieldnames=fields)
         writer.writeheader()
         for i in range(len(A)):
             
-            if((A[i] or B[i])== '0_unstated' ):      #Intially, after ScreenRecordStart, there were no annotations made -
+            if( (A[i].lower() == '0_unstated') or (B[i].lower() == '0_unstated')  ):      #Intially, after ScreenRecordStart, there were no annotations made -
                 continue                             #  for some rows, so we skip those rows  
             
             else:

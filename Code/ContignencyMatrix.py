@@ -11,15 +11,35 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
     
-filename = 'output.csv'
+#filename = 'output_1st.csv'          #<-----------------------
+filename = 'output_2nd.csv'
+
 data = pd.read_csv(filename) 
-# Preview the first 5 lines of the loaded data 
+
 data.head()
 y_pred = data ['Prediction']
 y_true_A = data['A']
 y_true_B = data ['B']
 
-#print(data)
+y_predA = data[['Prediction','A']]
+y_predB = data[['Prediction','B']]
+gd = data[['A','B']]
+
+def returnIndex(readingType):
+    if readingType.lower() == 'skimming':
+        return 0
+    elif(readingType.lower() == 'scanning'):
+        return 1
+    elif(readingType.lower() == 'reading'):
+        return 2
+    elif(readingType.lower() == 'unknown'):
+        return 3
+    elif(readingType.lower() == 'mediaview'):
+        return 4
+
+
+w, h = 5, 5;
+
 
 from sklearn import metrics
 
@@ -27,8 +47,25 @@ from sklearn import metrics
 
 #print("A wrt B, checking ground trurths against each other.")
 
-print("CONFUSION MATRIX WRT B")
-ConfusionMatrix = metrics.confusion_matrix(y_true_B, y_pred,labels=["Unknown", "Mediaview", "Skimming", "Scanning", "Reading"])
+print("CONFUSION MATRIX WRT B")     #<-----------------------
+
+
+
+ConfusionMatrix = [[0 for x in range(w)] for y in range(h)]
+
+for index, row in y_predB.iterrows():         #<------------- 
+#for index, row in gd.iterrows(): 
+
+    x = returnIndex(row['Prediction'])
+#    x = returnIndex(row['A'])
+    y = returnIndex(row['B'])                 #<----------------
+
+    ConfusionMatrix[x][y] += 1
+
+for i in range(0,5):
+    print(ConfusionMatrix[i])
+print('\n')    
+
 accuratePredictions = 0
 totalPredictions = 0
 for i in range(0, len(ConfusionMatrix)):
@@ -45,7 +82,12 @@ print("Accuracy:", finalAccuracy)
 print('\n')
 
 # Print the precision and recall, among other metrics
-print(metrics.classification_report(y_true_B, y_pred, digits=3))
+                                            #<-----------------------------
+print(metrics.classification_report(y_true_B, y_pred, digits=3))  
+
+
+#------------------------
+
 
 #------- Distribution of classes wrt A and B annotation and in predicted data
 def findDistribution(arr):
