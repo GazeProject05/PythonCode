@@ -41,41 +41,41 @@ observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation',
 transition = {
         'Scanning': {
                 'Scanning' : {'Scanning': -0.00232644438500174, 'Skimming':-7.88618962102806, 'Reading': -7.53254958078448, 'MediaView': -9.24263101899826, 'Unknown': -6.63342665253269},
-                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
+                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
+                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
                     },
         
         'Skimming': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
                 'Skimming' : {'Scanning': -7.48754377378507, 'Skimming': -0.00237288416630221, 'Reading': -7.22243602337183, 'MediaView': -9.11500019172185, 'Unknown': -6.93818448601684},
-                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
+                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
+                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
                     },
         
           'Reading': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
                 'Reading' :  {'Scanning': -7.6817646949916, 'Skimming': -8.02586085672347, 'Reading': -0.00201595889106265, 'MediaView': -10.1053023984033, 'Unknown': -6.73800656841683},
-                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
+                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
                     },
           
             'MediaView': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
                 'MediaView' :{'Scanning': -6.93723317180174, 'Skimming': -7.02424454879137, 'Reading': -7.81270190915564, 'MediaView': -0.00372892779686396, 'Unknown': -6.53176806369357},
-                'Unknown' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0}
+                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
                     },
             
               'Unknown': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Skimming' : {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'Reading' :  {'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
-                'MediaView' :{'Scanning': 0.0, 'Skimming': 0.0, 'Reading': 0.0, 'MediaView': 0.0, 'Unknown': 0.0},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
+                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
                 'Unknown' :  {'Scanning': -7.50494623776424, 'Skimming': -8.39876411378634, 'Reading': -7.9629015284938, 'MediaView': -10.6830000681122, 'Unknown': -0.00114723164757713}
                     }
         
@@ -284,8 +284,10 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                 #array = [ (V[t-1][y0]) , ( trans_p[x][y0][y] ) , m.log1p( emit_p[y][gazeEventData[t]] ) , m.log1p(gmmProbability(leftPupilData[t], y, 'left')) , m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  , m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
                 
                  #1st ->  Logic for skipping probilities, when data is not presents
-                array = [ (V[t-1][y0]), trans_p[x][y0][y] ]
+                array = [ (V[t-1][y0]) ]
                 
+                if(np.isnan(trans_p[x][y0][y]) == False ):
+                    array.append(trans_p[x][y0][y])
                 if(pd.isnull(gazeEventData[t]) == False):
                     array.append(m.log(emit_p[y][gazeEventData[t]]))
                     
