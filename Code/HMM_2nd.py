@@ -5,7 +5,7 @@ from scipy.stats import multivariate_normal as mn
 import csv
 
 #Reading data file
-df = pd.read_excel('21Proband21.xlsx')
+df = pd.read_excel('20Proband20.xlsx')
 
 #Readig relevant columns of data
 gazeEventData = df['GazeEventType']
@@ -34,6 +34,19 @@ start_probability = {'Scanning': 0.17857142857, 'Skimming': 0.0, 'Reading': 0.53
 
 #Dummy data for testing GazeEventType
 observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')
+
+
+
+
+#-------------------- 1st order Transition Matrix ----------#
+
+transition_probability = {
+   'Scanning' : {'Scanning': -0.00232095217675443, 'Skimming': -7.88855044050366, 'Reading': -7.53491040026009, 'MediaView': -9.24499183847387, 'Unknown': -6.6357874720083},
+   'Skimming' : {'Scanning': -7.48995094652083, 'Skimming': -0.00236717233575057, 'Reading': -7.22484319610759, 'MediaView': -9.11740736445761, 'Unknown': -6.9405916587526},
+   'Reading'  : {'Scanning': -7.68382320280519, 'Skimming': -8.02791936453706, 'Reading': -0.00201180911939325, 'MediaView': -10.1073609062169, 'Unknown': -6.74006507623042},
+   'MediaView': {'Scanning': -6.9409482463379, 'Skimming': -7.02795962332753, 'Reading': -7.8164169836918, 'MediaView': -0.00371507453616538, 'Unknown': -6.53548313822974},
+   'Unknown'  : {'Scanning': -7.50610673071849, 'Skimming': -8.39992460674059, 'Reading': -7.96406202144805, 'MediaView': -10.6841605610664, 'Unknown': -0.00114590030289818}
+   }
 
 
 #-------------------- 2nd order Transition Matrix ----------#
@@ -91,11 +104,11 @@ transition = {
 ##------------------------------- MODEL FOR GAZE EVENT TYPE ---------------------------------------##
 
 emission_probability = {
-   'Scanning' : {'Fixation': 0.63248022558, 'Saccade': 0.28533467154, 'Unclassified':  0.08218510287},
-   'Skimming' : {'Fixation': 0.54331139442, 'Saccade':  0.36026790895, 'Unclassified': 0.09642069662},
-   'Reading' : {'Fixation': 0.76076073655, 'Saccade':  0.18806560675, 'Unclassified': 0.05117365669},
-   'MediaView' : {'Fixation': 0.69896303332, 'Saccade':  0.2433309586, 'Unclassified': 0.05770600807},
-   'Unknown' : {'Fixation': 0.42320040043, 'Saccade': 0.19158475227, 'Unclassified': 0.38521484729}
+   'Scanning' : {'Fixation': -0.51042419, 'Saccade': -1.17873170, 'Unclassified':  -2.38498473},
+   'Skimming' : {'Fixation': -0.71985695, 'Saccade':  -0.90357292, 'Unclassified': -2.22508255},
+   'Reading' : {'Fixation': -0.29756367, 'Saccade':  -1.60167980, 'Unclassified': -2.88567604},
+   'MediaView' : {'Fixation': -0.36204432, 'Saccade':  -1.40492718, 'Unclassified': -2.84106350},
+   'Unknown' : {'Fixation': -1.01026657, 'Saccade': -1.33310886, 'Unclassified': -0.98826541}
 }
 
 
@@ -237,105 +250,175 @@ def print_dptable(V):
     
     
 #Viterbi algo function
-def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_p, trans_p, emit_p):
-    V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionar
-    path = {}
+def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_p, trans_p, t1, emit_p):
+#def viterbi(gazeEventData, states, start_p, trans_p, t1, emit_p):
+    V = []                        #[]-> List ; {} -> Dictionary
+    path = []
     
-    # Initialize base cases (t == 0)
-    for y in states:
-        #USE LOG HERE
-        #array = [m.log1p(start_p[y]) , m.log1p(emit_p[y][gazeEventData[0]]) , m.log1p(gmmProbability(leftPupilData[0] ,y, 'left')) , m.log1p(gmmProbability(rightPupilData[0] ,y, 'right')) , m.log1p(mulnor(gazeGradientData.iloc[0], y))]
-        array = []
-        #1st ->  Logic for skipping probilities, when data is not presents
+    
         
-        if(start_p[y] != 0.0):
-            array.append(m.log(start_p[y]))
+    
+    # Initialize base cases (t = 0)
+    dic = {}
+    for p in states:
+       
+        array = []
+        #Logic for skipping probilities, when data is not presents
+        
+        if(start_p[p] != 0.0):
+            array.append(m.log(start_p[p]))
                 
         if(pd.isnull(gazeEventData[0]) == False):
-            array.append(m.log(emit_p[y][gazeEventData[0]]))
+            array.append(emit_p[p][gazeEventData[0]])
                     
         if(pd.isnull(leftPupilData[0]) == False):    
-            array.append(gmmProbability(leftPupilData[0], y, 'left'))
+            array.append(gmmProbability(leftPupilData[0], p, 'left'))
         if(pd.isnull(rightPupilData[0]) == False):    
-            array.append(gmmProbability(rightPupilData[0], y, 'right'))
+            array.append(gmmProbability(rightPupilData[0], p, 'right'))
                 
         if((gazeGradientData.iloc[0].dropna().empty) == False):
-            array.append(mulnor(gazeGradientData.iloc[0], y))
+            array.append(mulnor(gazeGradientData.iloc[0], p))
+        
+        dic[p] = logExpSum(array)
+    V.append(dic)   
         
         
-        V[0][y] = logExpSum(array)  
-        path[y] = [y]
-
-   
-
-
-    # Run Viterbi for (t >= 1)
-    for t in range(1, len(gazeEventData)):
-        V.append({})
-        newpath = {}
-
-        for y in states:
-            maximum = float("-inf")
-            state = ''
-            array = []     
-            
-            for y0 in states:                
-                x = (path[y0][t-2])
-                #array = [ (V[t-1][y0]) , ( trans_p[x][y0][y] ) , m.log1p( emit_p[y][gazeEventData[t]] ) , m.log1p(gmmProbability(leftPupilData[t], y, 'left')) , m.log1p(gmmProbability(rightPupilData[t], y, 'right'))  , m.log1p(mulnor(gazeGradientData.iloc[t], y)) ]
-                
-                 #1st ->  Logic for skipping probilities, when data is not presents
-                array = [ (V[t-1][y0]) ]
-                
-                if(np.isnan(trans_p[x][y0][y]) == False ):
-                    array.append(trans_p[x][y0][y])
-                if(pd.isnull(gazeEventData[t]) == False):
-                    array.append(m.log(emit_p[y][gazeEventData[t]]))
+        
+    # Initialize base cases (t = 1)
+    dic = {}
+    for p in states:
+        for q in states:
                     
-                if(pd.isnull(leftPupilData[t]) == False):    
-                    array.append(gmmProbability(leftPupilData[t], y, 'left'))
-                if(pd.isnull(rightPupilData[t]) == False):    
-                    array.append(gmmProbability(rightPupilData[t], y, 'right'))
+            array = []
+            array.append(V[0][p])
+            array.append(t1[p][q])
+            
+            if(pd.isnull(gazeEventData[1]) == False):
+                array.append(emit_p[q][gazeEventData[1]])
+                    
+            if(pd.isnull(leftPupilData[1]) == False):    
+                array.append(gmmProbability(leftPupilData[1], q, 'left'))
+            if(pd.isnull(rightPupilData[1]) == False):    
+                array.append(gmmProbability(rightPupilData[1], q, 'right'))
                 
-                if((gazeGradientData.iloc[t].dropna().empty) == False):
-                    array.append(mulnor(gazeGradientData.iloc[t], y))
-                
-                temp = logExpSum(array)
-                
-                # y  -> t   -> state in this time step
-                # y0 -> t-1 -> state 1 time step ago
-                # x  -> t-2 -> state 2 time steps ago
-                
-                if (temp > maximum):
-                    maximum = temp
-                    state = y0
-                
-                
-            V[t][y] = maximum
-            newpath[y] = path[state] + [y]
+            if((gazeGradientData.iloc[1].dropna().empty) == False):
+                array.append(mulnor(gazeGradientData.iloc[1], q))
+            
+            key = str(p) + ',' + str(q)
+            dic[key] = logExpSum(array)
+    V.append(dic)
+    
+           
 
-        # Don't need to remember the old paths
-        path = newpath
-        
-        
-    #print_dptable(V)
-    (prob, state) = max((V[t][y], y) for y in states)
-    # return (prob, path[state])
-    #print(prob, path[state])
-    #print(type(path[state]))
-    return( path[state] ) 
 
+    # Run Viterbi for (t >= 2)
+
+    for t in range(2, len(gazeEventData)):
+        dic = {}      #Variables with NO prefix, store delta values  
+        dic2 = {}     #Variables with 2 as prefix, work with max prob path
+
+# r  -> t   -> state in this time step
+# q -> t-1 -> state 1 time step ago
+# p  -> t-2 -> state 2 time steps ago  
+
+        for q in states:
+            for r in states:
+                
+                maximum = float("-inf")
+                maximum2 = float("-inf")
+                state = ''
+                array = []    
+                array2 = []    
+                for p in states:
+                    
+                    key = str(p) + ',' + str(q)
+                    array.append(V[t-1][key])
+                    array2.append(V[t-1][key])
+                    
+                    if(np.isnan(trans_p[p][q][r]) == False ):
+                        array.append(trans_p[p][q][r])
+                        array2.append(trans_p[p][q][r])
+                    
+                    if(pd.isnull(gazeEventData[t]) == False):
+                        array.append(emit_p[r][gazeEventData[t]])
+                    
+                    if(pd.isnull(leftPupilData[t]) == False):    
+                        array.append(gmmProbability(leftPupilData[t], r, 'left'))
+                    if(pd.isnull(rightPupilData[t]) == False):    
+                        array.append(gmmProbability(rightPupilData[t], r, 'right'))
+                
+                    if((gazeGradientData.iloc[t].dropna().empty) == False):
+                        array.append(mulnor(gazeGradientData.iloc[t], r))
+                    
+                    
+                    temp = logExpSum(array)
+                    temp2 = logExpSum(array2)
+                    
+                    if (temp > maximum):
+                        maximum = temp
+                    
+                    if(temp2>maximum2):
+                        state = p
+                
+                 
+                key = str(q) + ',' + str(r)
+                dic[key] = maximum 
+                dic2[key] = state
+                
+        V.append(dic)
+        path.append(dic2)
+
+    
+    
+ #back track the most probable path    
+ 
+    maxim = float("-inf")
+    t = len(V)
+    
+    for q in states:
+        for r in states:
+            
+            key =  str(q) + ',' + str(r)
+            if(V[(t-1)][key] > maxim):
+                
+                maxim = V[t-1][key]
+                last = r
+                second_last = q
+            
+
+                    
+                
+    out = []
+    out.append(last)
+    out.append(second_last)
+    
+    for i in range( (len(V)-3),0,-1):        
+        key = str(second_last) + ',' + str(last)    
+        out.append( path[i][key] )
+        
+        last = second_last    
+        second_last = path[i][key]
+
+
+         
+    out.reverse()           # output handling       
+    return(out)
 
 
 ##------------------------- Saving in a .csv file ----------##
     
 def exportcsv(path, A, B):
-
+    
+    A.pop(0)
+    B.pop(0)
+    
     fields = ['Prediction','A','B']
 
     with open ('output_2nd.csv','w') as file:
         writer = csv.DictWriter(file, fieldnames=fields)
         writer.writeheader()
         for i in range(len(A)):
+            
             
             if( (A[i].lower() == '0_unstated') or (B[i].lower() == '0_unstated')  ):     #Intially, after ScreenRecordStart, there were no annotations made - 
                 continue                            #  for some rows, so we skip those rows
@@ -376,11 +459,12 @@ def findMaxArray(arr):
 
 #-------------- Main--------#
 def main():
-    path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, emission_probability)
-
-    #print(len(path))
-    #print(len(gd1))
-    #print(len(gd2))
+    path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, transition_probability, emission_probability)
+#    viterbi(observations, states, start_probability, transition, transition_probability, emission_probability)
+    
+   # print(len(path))
+   # print(len(gd1))
+   # print(len(gd2))
     exportcsv(path, gd1, gd2)
     
 
