@@ -33,9 +33,9 @@ start_probability = {'Scanning': 0.17857142857, 'Skimming': 0.0, 'Reading': 0.53
 
 
 #Dummy data for testing GazeEventType
-observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')
-
-
+observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Saccade','Fixation')
+gr1 = ['1_Scanning','1_Scanning','1_Unknown','1_Unknown','1_Unknown','1_Reading','1_Skimming']
+gr2 = ['1_Skimming','1_Reading','1_Unknown','1_MediaView','1_Unknown','1_Reading','1_Scanning']
 
 
 #-------------------- 1st order Transition Matrix ----------#
@@ -250,6 +250,7 @@ def print_dptable(V):
     
     
 #Viterbi algo function
+    
 def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_p, trans_p, t1, emit_p):
 #def viterbi(gazeEventData, states, start_p, trans_p, t1, emit_p):
     V = []                        #[]-> List ; {} -> Dictionary
@@ -300,7 +301,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                 array.append(gmmProbability(leftPupilData[1], q, 'left'))
             if(pd.isnull(rightPupilData[1]) == False):    
                 array.append(gmmProbability(rightPupilData[1], q, 'right'))
-                
+               
             if((gazeGradientData.iloc[1].dropna().empty) == False):
                 array.append(mulnor(gazeGradientData.iloc[1], q))
             
@@ -408,22 +409,23 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
 ##------------------------- Saving in a .csv file ----------##
     
 def exportcsv(path, A, B):
-    
-    A.pop(0)
-    B.pop(0)
-    
+ 
+    path.insert(0,'')    
+            
     fields = ['Prediction','A','B']
 
     with open ('output_2nd.csv','w') as file:
         writer = csv.DictWriter(file, fieldnames=fields)
         writer.writeheader()
+        
         for i in range(len(A)):
             
             
-            if( (A[i].lower() == '0_unstated') or (B[i].lower() == '0_unstated')  ):     #Intially, after ScreenRecordStart, there were no annotations made - 
-                continue                            #  for some rows, so we skip those rows
+            if( (A[i].lower() == '0_unstated') or (B[i].lower() == '0_unstated')  ):   
+                continue 
             
             else:
+                
                 a = A[i].split('_')
                 b = B[i].split('_')
                          
@@ -460,13 +462,12 @@ def findMaxArray(arr):
 #-------------- Main--------#
 def main():
     path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, transition_probability, emission_probability)
-#    viterbi(observations, states, start_probability, transition, transition_probability, emission_probability)
+#    path = viterbi(gazeEventData, states, start_probability, transition, transition_probability, emission_probability)
     
-   # print(len(path))
-   # print(len(gd1))
-   # print(len(gd2))
+#    print(len(path))
+#    print(len(gd1))
+#    print(len(gd2))
     exportcsv(path, gd1, gd2)
-    
 
 if __name__ == '__main__':
     main()
