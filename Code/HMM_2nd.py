@@ -5,7 +5,7 @@ from scipy.stats import multivariate_normal as mn
 import csv
 
 #Reading data file
-df = pd.read_excel('20Proband20.xlsx')
+df = pd.read_excel('16Proband16.xlsx')
 
 #Readig relevant columns of data
 gazeEventData = df['GazeEventType']
@@ -22,14 +22,11 @@ gazeGradientData = df[['GazeGradientX','GazeGradientY']]
 gd1 = df['StudioEvent']
 gd2 = df['StudioEvent_B']
 
-                            #WHY are obs and y2 ARE THESE DIFFERENT??????
-                            # y2 = df['GazeEventType_B']
-                            # y3= df['GazeEventTypeDiff']
 
 
 # Modeling
 states = ('Scanning', 'Skimming', 'Reading', 'MediaView', 'Unknown')
-start_probability = {'Scanning': 0.17857142857, 'Skimming': 0.0, 'Reading': 0.53571428571, 'MediaView': 0.0, 'Unknown':  0.28571428571}
+start_probability = {'Scanning': -1.72276659775, 'Skimming': float("-inf"), 'Reading': -0.62415430908, 'MediaView': float("-inf"), 'Unknown':  -1.25276296851}
 
 
 #Dummy data for testing GazeEventType
@@ -50,50 +47,49 @@ transition_probability = {
 
 
 #-------------------- 2nd order Transition Matrix ----------#
-
+#base e
 transition = {
         'Scanning': {
                 'Scanning' : {'Scanning': -0.00232644438500174, 'Skimming':-7.88618962102806, 'Reading': -7.53254958078448, 'MediaView': -9.24263101899826, 'Unknown': -6.63342665253269},
-                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
-                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
-                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
+                'Skimming' : {'Scanning': float("-inf"), 'Skimming': 0.0, 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Reading' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': 0.0, 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'MediaView' :{'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': 0.0, 'Unknown': float("-inf")},
+                'Unknown' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': 0.0}
                     },
         
         'Skimming': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
                 'Skimming' : {'Scanning': -7.48754377378507, 'Skimming': -0.00237288416630221, 'Reading': -7.22243602337183, 'MediaView': -9.11500019172185, 'Unknown': -6.93818448601684},
-                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
-                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
-                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
+                'Reading' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': 0.0, 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'MediaView' :{'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': 0.0, 'Unknown': float("-inf")},
+                'Unknown' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': 0.0}
                     },
         
           'Reading': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Skimming' : {'Scanning': float("-inf"), 'Skimming': 0.0, 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
                 'Reading' :  {'Scanning': -7.6817646949916, 'Skimming': -8.02586085672347, 'Reading': -0.00201595889106265, 'MediaView': -10.1053023984033, 'Unknown': -6.73800656841683},
-                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
-                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
+                'MediaView' :{'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': 0.0, 'Unknown': float("-inf")},
+                'Unknown' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': 0.0}
                     },
           
             'MediaView': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Skimming' : {'Scanning': float("-inf"), 'Skimming': 0.0, 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Reading' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': 0.0, 'MediaView': float("-inf"), 'Unknown': float("-inf")},
                 'MediaView' :{'Scanning': -6.93723317180174, 'Skimming': -7.02424454879137, 'Reading': -7.81270190915564, 'MediaView': -0.00372892779686396, 'Unknown': -6.53176806369357},
-                'Unknown' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': 0.0}
+                'Unknown' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': 0.0}
                     },
             
               'Unknown': {
-                'Scanning' : {'Scanning': 0.0, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Skimming' : {'Scanning': np.nan, 'Skimming': 0.0, 'Reading': np.nan, 'MediaView': np.nan, 'Unknown': np.nan},
-                'Reading' :  {'Scanning': np.nan, 'Skimming': np.nan, 'Reading': 0.0, 'MediaView': np.nan, 'Unknown': np.nan},
-                'MediaView' :{'Scanning': np.nan, 'Skimming': np.nan, 'Reading': np.nan, 'MediaView': 0.0, 'Unknown': np.nan},
+                'Scanning' : {'Scanning': 0.0, 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Skimming' : {'Scanning': float("-inf"), 'Skimming': 0.0, 'Reading': float("-inf"), 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'Reading' :  {'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': 0.0, 'MediaView': float("-inf"), 'Unknown': float("-inf")},
+                'MediaView' :{'Scanning': float("-inf"), 'Skimming': float("-inf"), 'Reading': float("-inf"), 'MediaView': 0.0, 'Unknown': float("-inf")},
                 'Unknown' :  {'Scanning': -7.50494623776424, 'Skimming': -8.39876411378634, 'Reading': -7.9629015284938, 'MediaView': -10.6830000681122, 'Unknown': -0.00114723164757713}
                     }
         
-        }
-              
+        }              
 
 #print(transition['Reading']['Reading']['Unknown']) 
 # t-2 -> Reading -> state 2 time steps ago
@@ -102,7 +98,7 @@ transition = {
        
         
 ##------------------------------- MODEL FOR GAZE EVENT TYPE ---------------------------------------##
-
+#base e
 emission_probability = {
    'Scanning' : {'Fixation': -0.51042419, 'Saccade': -1.17873170, 'Unclassified':  -2.38498473},
    'Skimming' : {'Fixation': -0.71985695, 'Saccade':  -0.90357292, 'Unclassified': -2.22508255},
@@ -157,15 +153,15 @@ rightPupilModel = {
 }
 
 
-def normalProbability(x, mean, std_dev):
-    return ( (1/(std_dev*2.507)) * m.exp((-0.5)*m.pow( (x - mean)/std_dev , 2) ) )
+#def normalProbability(x, mean, std_dev):
+#    return ( (1/(std_dev*2.507)) * m.exp((-0.5)*m.pow( (x - mean)/std_dev , 2) ) )
 
 def logPdf(datapoint, mean,deviation):
     #print("Calculating PDF")
     #u = (datapoint - self.mean) / abs(self.deviation)
     #y = -math.log(math.sqrt(2*math.pi*self.deviation * self.deviation))- (u*u/2)
     u = (datapoint - mean)
-    y = -m.log(m.sqrt(2*m.pi*deviation))- (u*u/(2*deviation))
+    y = -m.log(m.sqrt(2*m.pi*deviation))- (u*u/(2*deviation))    #base e
     #print("PDF: {} ".format(y))
     return y
 
@@ -175,22 +171,17 @@ def gmmProbability(x, key, side):
     p=0
     tempProbabs = []
     
-    #if(np.isnan(x)):              #checking for 0 (NAN) values
-    #    p = 0
-    
     
     if(side=='left'):           #side -> decides which (left or right) pupil model are we going to use. 
         n = len(leftPupilModel[key])        
         for i in range(n):
             tempProbabs.append(logPdf(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )+ m.log(leftPupilModel[key][i]['weight']))
-    #        p = p + ( normalProbability(x, leftPupilModel[key][i]['mean'] , leftPupilModel[key][i]['std_dev'] )  * leftPupilModel[key][i]['weight']  )
         p = logExpSum(tempProbabs)
     
     elif(side=='right'):
         n = len(rightPupilModel[key])
         for i in range(n):
             tempProbabs.append(logPdf(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )+ m.log(rightPupilModel[key][i]['weight']))
-    #        p = p + ( normalProbability(x, rightPupilModel[key][i]['mean'] , rightPupilModel[key][i]['std_dev'] )  * rightPupilModel[key][i]['weight']  )
         p = logExpSum(tempProbabs)
         
     return p
@@ -230,10 +221,7 @@ MultiVariateModel = {
 # mn.pdf(x,mean,cov)
 
 def mulnor(x, key):
- #   if(np.isnan(x[0] or x[1]) ):     #checking for 0 (NAN) values
-  #      return 0
-  #  else:
-  return mn.logpdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])
+  return mn.logpdf(x, mean = MultiVariateModel[key]['MeanArray'], cov = MultiVariateModel[key]['Coovariance'])  #base e
         
               
     
@@ -264,11 +252,9 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     for p in states:
        
         array = []
-        #Logic for skipping probilities, when data is not presents
+        array.append(start_p[p])
         
-        if(start_p[p] != 0.0):
-            array.append(m.log(start_p[p]))
-                
+        #Logic for skipping probilities, when data is not presents        
         if(pd.isnull(gazeEventData[0]) == False):
             array.append(emit_p[p][gazeEventData[0]])
                     
@@ -280,7 +266,9 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         if((gazeGradientData.iloc[0].dropna().empty) == False):
             array.append(mulnor(gazeGradientData.iloc[0], p))
         
+                    
         dic[p] = logExpSum(array)
+   
     V.append(dic)   
         
         
@@ -307,6 +295,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
             
             key = str(p) + ',' + str(q)
             dic[key] = logExpSum(array)
+ 
     V.append(dic)
     
            
@@ -318,10 +307,10 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         dic = {}      #Variables with NO prefix, store delta values  
         dic2 = {}     #Variables with 2 as prefix, work with max prob path
 
-# r  -> t   -> state in this time step
+# p -> t-2 -> state 2 time steps ago  
 # q -> t-1 -> state 1 time step ago
-# p  -> t-2 -> state 2 time steps ago  
-
+# r -> t   -> state in this time step
+        
         for q in states:
             for r in states:
                 
@@ -336,9 +325,9 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                     array.append(V[t-1][key])
                     array2.append(V[t-1][key])
                     
-                    if(np.isnan(trans_p[p][q][r]) == False ):
-                        array.append(trans_p[p][q][r])
-                        array2.append(trans_p[p][q][r])
+                    
+                    array.append(trans_p[p][q][r])
+                    array2.append(trans_p[p][q][r])
                     
                     if(pd.isnull(gazeEventData[t]) == False):
                         array.append(emit_p[r][gazeEventData[t]])
@@ -365,12 +354,12 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                 key = str(q) + ',' + str(r)
                 dic[key] = maximum 
                 dic2[key] = state
-                
+        
+        
         V.append(dic)
         path.append(dic2)
 
-    
-    
+            
  #back track the most probable path    
  
     maxim = float("-inf")
@@ -439,12 +428,13 @@ def exportcsv(path, A, B):
 #--------------- log Exp trick ----------#
 
 def logExpSum(arr ):
-    #find maximum of array assuming the array passed is already containg log values
+    #find maximum of array assuming the array passed is already containg log values        
     maxVal =0
     maxVal= findMaxArray(arr)
+
     res = 0
     for i in range(0, len(arr)):
-        res += m.exp (arr[i] - maxVal) 
+        res = res + m.exp (arr[i] - maxVal) 
     return (m.log(res)+ maxVal)    
 
     
@@ -462,11 +452,12 @@ def findMaxArray(arr):
 #-------------- Main--------#
 def main():
     path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition, transition_probability, emission_probability)
-#    path = viterbi(gazeEventData, states, start_probability, transition, transition_probability, emission_probability)
+ #   path = viterbi(observations, states, start_probability, transition, transition_probability, emission_probability)
     
-#    print(len(path))
+#    print(path)
 #    print(len(gd1))
 #    print(len(gd2))
+ 
     exportcsv(path, gd1, gd2)
 
 if __name__ == '__main__':

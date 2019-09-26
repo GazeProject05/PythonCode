@@ -11,30 +11,33 @@ import math
 from decimal import Decimal
 #from collections import Counter
 
-df1 = pd.read_excel('1Proband1.xlsx')
-df2 = pd.read_excel('2Proband2.xlsx')
-df3 = pd.read_excel('3Proband3.xlsx')
-df5 = pd.read_excel('5Proband5.xlsx')
-df6 = pd.read_excel('6Proband6.xlsx')
-df7 = pd.read_excel('7Proband7.xlsx')
-df8 = pd.read_excel('8Proband8.xlsx')
-#df9 = pd.read_excel('9Proband9.xlsx')
-df10 = pd.read_excel('10Proband10.xlsx')
-df11 = pd.read_excel('11Proband11.xlsx')
-df12 = pd.read_excel('12Proband12.xlsx')
-df13 = pd.read_excel('13Proband13.xlsx')
-df14 = pd.read_excel('14Proband14.xlsx')
-df15 = pd.read_excel('15Proband15.xlsx')
-#df16 = pd.read_excel('16Proband16.xlsx')
+df1 = pd.read_excel('Proband_21_D1.xlsx')
+df2 = pd.read_excel('Proband_22_D2.xlsx')
+df3 = pd.read_excel('Proband_23_D3.xlsx')
+df5 = pd.read_excel('Proband_25_D2.xlsx')
+df6 = pd.read_excel('Proband_26_D3.xlsx')
+df7 = pd.read_excel('Proband_27_D1.xlsx')
+df8 = pd.read_excel('Proband_28_D2.xlsx')
+df10 = pd.read_excel('Proband_30_D1.xlsx')
+df11 = pd.read_excel('Proband_31_D2.xlsx')
+df12 = pd.read_excel('Proband_32_D3.xlsx')
+df13 = pd.read_excel('Proband_33_D1.xlsx')
+df14 = pd.read_excel('Proband_34_D2.xlsx')
+df15 = pd.read_excel('Proband_35_D3.xlsx')
+df16 = pd.read_excel('Proband_36_D1.xlsx')
+df18 = pd.read_excel('Proband_38_D3.xlsx')
+#df19 = pd.read_excel('Proband_39_D1.xlsx')
+#df20 = pd.read_excel('Proband_40_D2.xlsx')
+#df21 = pd.read_excel('Proband_41_D3.xlsx')
 
        
-df_list = [df1, df2, df3,df5,df6,df7,df8,df10,df11,df12,df13,df14,df15]
+df_list = [df1,df2,df3,df5,df6,df7,df8,df10,df11,df12,df13,df14,df15,df16,df18]
 def strip_columns(df_list):
     u = []
     df_list_ = []
     for df in df_list:
         for cols in df:
-            if cols not in('StudioEvent','StudioEvent_B','GazeEventType', 'GazeEventType_B'):
+            if cols not in('StudioEvent','StudioEvent_B','GazeEventType'):
                 u.append(cols)
         df= df.drop(columns=u)
         df_list_.append(df)
@@ -42,7 +45,7 @@ def strip_columns(df_list):
             
     return df_list_
 df_list = strip_columns(df_list)
-del df1,df2,df3,df5,df6,df7,df8,df10,df11,df12,df13,df14,df15
+#del df1,df2,df3,df5,df6,df7,df8,df10,df11,df12,df13,df14,df15
 #**********************************get Emmission Probabilities********************
 #def emmission_probabilities(df_list):
     #taking counts per df 
@@ -77,7 +80,7 @@ def get_probabilities(df):
     for x in df['StudioEvent_B']:
         a.append(x)
     b = []
-    for x in df['GazeEventType_B']:
+    for x in df['GazeEventType']:
         b.append(x)
     #b = np.array(b)
     c = []
@@ -135,7 +138,7 @@ def combined_emmission(df_list):
     #total_counts.describe()
 
     #**********************Print out Matrix***********************
-    excel_file = pd.ExcelWriter('Gaze_Emmission_Probabilities.xlsx')
+    excel_file = pd.ExcelWriter('GazeEmmission_fold6.xlsx')
     total_counts.to_excel(excel_file, sheet_name='Sheet1', index=False)
     excel_file.save()
     excel_file.close()
