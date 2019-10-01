@@ -266,9 +266,9 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         if((gazeGradientData.iloc[0].dropna().empty) == False):
             array.append(mulnor(gazeGradientData.iloc[0], p))
         
-                    
-        dic[p] = logExpSum(array)
-   
+  
+        dic[p] = sum(array)
+        
     V.append(dic)   
         
         
@@ -294,7 +294,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                 array.append(mulnor(gazeGradientData.iloc[1], q))
             
             key = str(p) + ',' + str(q)
-            dic[key] = logExpSum(array)
+            dic[key] = sum(array)
  
     V.append(dic)
     
@@ -304,8 +304,8 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     # Run Viterbi for (t >= 2)
 
     for t in range(2, len(gazeEventData)):
-        dic = {}      #Variables with NO prefix, store delta values  
-        dic2 = {}     #Variables with 2 as prefix, work with max prob path
+        dic = {}      #Variables witrefix, store delta values  
+        dic2 = {}     #Variables with 2 as prefix, h NO pwork with max prob path
 
 # p -> t-2 -> state 2 time steps ago  
 # q -> t-1 -> state 1 time step ago
@@ -341,8 +341,8 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                         array.append(mulnor(gazeGradientData.iloc[t], r))
                     
                     
-                    temp = logExpSum(array)
-                    temp2 = logExpSum(array2)
+                    temp = sum(array)
+                    temp2 = sum(array2)
                     
                     if (temp > maximum):
                         maximum = temp
@@ -382,7 +382,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     out.append(last)
     out.append(second_last)
     
-    for i in range( (len(V)-3),0,-1):        
+    for i in range( (len(V)-2),0,-1):        
         key = str(second_last) + ',' + str(last)    
         out.append( path[i][key] )
         

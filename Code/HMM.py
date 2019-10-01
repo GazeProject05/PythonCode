@@ -192,8 +192,6 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionary
     path = []
     dic = {}
-
-    path2 = {}
    
     
     # Initialize base cases (t == 0)
@@ -217,7 +215,6 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
         
         V[0][p] = sum(array)
         dic[p] = [p]
-        path2[p] = [p]
     path.append(dic)
 
    
@@ -227,7 +224,6 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     dic = {}
     for t in range(1, len(gazeEventData)):
         V.append({})
-        newpath = {}
 
         for q in states:
             maximum = float("-inf")
@@ -262,10 +258,8 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
             
             V[t][q] = maximum
             dic[q] = state
-            newpath[q] = path2[state] + [q]
             
         path.append(dic)
-        path2 = newpath
         
     # print_dptable(V)
     (prob, state) = max((V[t][y], y) for y in states)
@@ -281,7 +275,6 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
     
     out.reverse()
     
-#    return (path2[state])
     return(out)
 
 ##------------------------- Saving in a .csv file ----------##
