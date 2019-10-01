@@ -5,7 +5,7 @@ from scipy.stats import multivariate_normal as mn
 import csv
 
 #Reading data file
-df = pd.read_excel('16Proband16.xlsx')
+df = pd.read_excel('19Proband19.xlsx')
 
 #Readig relevant columns of data
 gazeEventData = df['GazeEventType']
@@ -30,7 +30,7 @@ start_probability = {'Scanning': -1.72276659775, 'Skimming': float("-inf"), 'Rea
 
 
 #Dummy data for testing GazeEventType
-observations = ('Fixation','Saccade','Saccade','Fixation','Fixation','Fixation','Fixation')    #First 7 sates fixation
+observations = ('Fixation','Saccade','Fixation','Fixation','Fixation','Fixation','Fixation')    #First 7 sates fixation
 gr1 = ['1_Scanning','1_Scanning','1_Unknown','1_Unknown','1_Unknown','1_Reading','1_Skimming']
 gr2 = ['1_Skimming','1_Reading','1_Unknown','1_MediaView','1_Unknown','1_Reading','1_Scanning']
 
@@ -188,10 +188,14 @@ def print_dptable(V):
 
 #Viterbi algo function
 def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_p, trans_p, emit_p):
+#def viterbi(gazeEventData, states, start_p, trans_p, emit_p):    
     V = [{}]                        #[]-> List ; {} -> Dictionary        [{}] ->List of dictionary
-    path = {}
+    path = []
+    dic = {}
 
-
+    path2 = {}
+   
+    
     # Initialize base cases (t == 0)
     for p in states:
 
@@ -211,13 +215,16 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
             array.append(mulnor(gazeGradientData.iloc[0], p))
         
         
-        V[0][p] = logExpSum(array)
-        path[p] = [p]
+        V[0][p] = sum(array)
+        dic[p] = [p]
+        path2[p] = [p]
+    path.append(dic)
 
    
 
 
     # Run Viterbi for (t >= 1)
+    dic = {}
     for t in range(1, len(gazeEventData)):
         V.append({})
         newpath = {}
@@ -246,7 +253,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                     array.append(mulnor(gazeGradientData.iloc[t], q))
                     
                 
-                temp = logExpSum(array)
+                temp = sum(array)
                 
                 if (temp > maximum):
                     maximum = temp
@@ -254,18 +261,28 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
                         
             
             V[t][q] = maximum
-            newpath[q] = path[state] + [q]
-
-        # Don't need to remember the old paths
-        path = newpath
-
+            dic[q] = state
+            newpath[q] = path2[state] + [q]
+            
+        path.append(dic)
+        path2 = newpath
+        
     # print_dptable(V)
     (prob, state) = max((V[t][y], y) for y in states)
     # return (prob, path[state])
     #print(prob, path[state])
     #print(type(path[state]))
-    return path[state]
-
+    
+    out = []
+    out.append(state)
+    for i in range((len(V)-1),0,-1):
+        key = out[-1]
+        out.append(path[i][key])
+    
+    out.reverse()
+    
+#    return (path2[state])
+    return(out)
 
 ##------------------------- Saving in a .csv file ----------##
     
@@ -317,7 +334,9 @@ def findMaxArray(arr):
 
 def main():
     path = viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, states, start_probability, transition_probability, emission_probability)
-   
+#    path = viterbi(observations, states, start_probability, transition_probability, emission_probability)
+        
+ #   print(path)
     exportcsv(path, gd1, gd2)
     
 
