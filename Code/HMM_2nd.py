@@ -398,9 +398,7 @@ def viterbi(gazeEventData, leftPupilData, rightPupilData, gazeGradientData, stat
 ##------------------------- Saving in a .csv file ----------##
     
 def exportcsv(path, A, B):
- 
-    path.insert(0,'')    
-            
+             
     fields = ['Prediction','A','B']
 
     with open ('output_2nd.csv','w') as file:
