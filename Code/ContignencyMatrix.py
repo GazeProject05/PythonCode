@@ -11,8 +11,8 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
     
-#filename = 'output_1st.csv'          #<-----------------------
-filename = 'output_2nd.csv'
+filename = '1output_0.csv'          #<-----------------------
+#filename = 'output_2nd.csv'
 
 data = pd.read_csv(filename) 
 
@@ -47,18 +47,18 @@ from sklearn import metrics
 
 #print("A wrt B, checking ground trurths against each other.")
 
-print("CONFUSION MATRIX WRT B")     #<-----------------------
+print("CONFUSION MATRIX WRT A")     #<-----------------------
 
 
 
 ConfusionMatrix = [[0 for x in range(w)] for y in range(h)]
 
-for index, row in y_predB.iterrows():         #<------------- 
+for index, row in y_predA.iterrows():         #<------------- 
 #for index, row in gd.iterrows(): 
 
     x = returnIndex(row['Prediction'])
-#    x = returnIndex(row['A'])
-    y = returnIndex(row['B'])                 #<----------------
+ #   x = returnIndex(row['A'])
+    y = returnIndex(row['A'])                 #<----------------
 
     ConfusionMatrix[x][y] += 1
 
@@ -83,7 +83,7 @@ print('\n')
 
 # Print the precision and recall, among other metrics
                                             #<-----------------------------
-print(metrics.classification_report(y_true_B, y_pred, digits=3))  
+print(metrics.classification_report(y_true_A, y_pred, digits=3))  
 
 
 #------------------------
